@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculadora para Negocios</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                margin: 0;
+                padding: 20px;
+            }
+    
+            .container {
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+    
+            h1, h2 {
+                text-align: center;
+                color: #333;
+            }
+    
+            .input-group {
+                margin-bottom: 15px;
+            }
+    
+            .input-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #444;
+            }
+    
+            input[type="number"], select {
+                width: 100%;
+                padding: 8px;
+                margin: 6px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+    
+            button {
+                width: 100%;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            button:hover {
+                background-color: #45a049;
+            }
+    
+            .result {
+                background-color: #e7e7e7;
+                padding: 15px;
+                border-radius: 4px;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    
+<body>
+    <div class="container">
+        <h1>Calculadora para Negocios</h1>
+        <button onclick="mostrarSeccion('utilidad')">Calculadora de Utilidad</button>
+        <button onclick="mostrarSeccion('puntoEquilibrio')">Calculadora del Punto de Equilibrio</button>
+
+        <div id="seccionUtilidad" class="hidden">
+            <div class="container">
+                <div class="input-group">
+                    <label for="tipoCambio">Tipo de Cambio (soles por dólar):</label>
+                    <input type="number" id="tipoCambio" placeholder="Ingrese tipo de cambio">
+                </div>
+                <div class="input-group">
+                    <label for="ventasTotales">Ventas Totales (soles):</label>
+                    <input type="number" id="ventasTotales" placeholder="Ingrese ventas totales">
+                </div>
+                <div class="input-group">
+                    <label for="margenGanancia">Margen de Ganancia (%):</label>
+                    <input type="number" id="margenGanancia" placeholder="Ingrese margen de ganancia">
+                </div>
+        
+                <div class="input-group">
+                    <label for="tipoAlquiler">Tipo de Alquiler:</label>
+                    <select id="tipoAlquiler">
+                        <option value="porcentaje">Porcentaje</option>
+                        <option value="fijo">Monto Fijo</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="monedaAlquiler">Moneda de Alquiler:</label>
+                    <select id="monedaAlquiler">
+                        <option value="soles">Soles</option>
+                        <option value="dolares">Dólares</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="alquiler">Alquiler:</label>
+                    <input type="number" id="alquiler" placeholder="Ingrese alquiler o porcentaje">
+                </div>
+        
+                <div class="input-group">
+                    <label for="gastosDolares">Gastos Extras (dólares):</label>
+                    <input type="number" id="gastosDolares" placeholder="Ingrese gastos extras en dólares">
+                </div>
+                <div class="input-group">
+                    <label for="numVendedoras">Número de Vendedoras:</label>
+                    <input type="number" id="numVendedoras" placeholder="Ingrese número de vendedoras">
+                </div>
+        
+        <div class="input-group">
+                <label for="comisionJefa">Comisión Jefa de Tienda (soles):</label>
+                <input type="number" id="comisionJefa" disabled>
+            </div>
+            <div class="input-group">
+                <label for="comisionAsistente">Comisión Asistente (soles):</label>
+                <input type="number" id="comisionAsistente" disabled>
+            </div>
+            <div class="input-group">
+                <label for="comisionOtras">Comisión Otras Vendedoras (soles):</label>
+                <input type="number" id="comisionOtras" disabled>
+            </div>
+        
+            <div class="input-group">
+                <label for="sueldoJefa">Sueldo Jefa de Tienda (soles):</label>
+                <input type="number" id="sueldoJefa" disabled>
+            </div>
+            <div class="input-group">
+                <label for="sueldoAsistente">Sueldo Asistente (soles):</label>
+                <input type="number" id="sueldoAsistente" disabled>
+            </div>
+            <div class="input-group">
+                <label for="sueldoOtras">Sueldo Otras Vendedoras (soles):</label>
+                <input type="number" id="sueldoOtras" disabled>
+            </div>
+            <div class="input-group">
+                <label for="costoTotalAlquiler">Costo Total de Alquiler (soles):</label>
+                <input type="number" id="costoTotalAlquiler" disabled>
+            </div>
+            
+        
+               
+                <button onclick="calcularResultados()">Calcular</button>
+        
+                <div class="result" id="resultado">
+                    <!-- Aquí se mostrarán los resultados -->
+                </div>
+            </div>
+        
+            <script>
+                function calcularResultados() {
+    var tipoCambio = parseFloat(document.getElementById('tipoCambio').value);
+    var ventasTotales = parseFloat(document.getElementById('ventasTotales').value);
+    var margenGanancia = parseFloat(document.getElementById('margenGanancia').value) / 100;
+    var tipoAlquiler = document.getElementById('tipoAlquiler').value;
+    var monedaAlquiler = document.getElementById('monedaAlquiler').value;
+    var alquiler = parseFloat(document.getElementById('alquiler').value);
+    var gastosDolares = parseFloat(document.getElementById('gastosDolares').value);
+    var numVendedoras = parseInt(document.getElementById('numVendedoras').value);
+
+    var sueldoMinimo = 1070;
+    var factorPlanilla = 1.35;
+
+    // Calculamos el sueldo total y las comisiones de las vendedoras
+    var sueldoTotalVendedoras = sueldoMinimo * numVendedoras * factorPlanilla;
+    var comisiones = ventasTotales * 0.03 * factorPlanilla; // 3% de comisiones
+
+    // Calculamos el costo de alquiler
+    var costoAlquiler;
+    if (tipoAlquiler === "porcentaje") {
+        costoAlquiler = ventasTotales * (alquiler / 100);
+    } else if (tipoAlquiler === "fijo") {
+        costoAlquiler = alquiler * (monedaAlquiler === "dolares" ? tipoCambio : 1);
+    }
+
+    var gastosExtrasSoles = gastosDolares * tipoCambio;
+    var costoTotalAlquiler = costoAlquiler + gastosExtrasSoles;
+
+    var utilidadFinal = ventasTotales * margenGanancia - costoTotalAlquiler - sueldoTotalVendedoras - comisiones;
+
+    var resultadoHTML = "<h3>Resultados</h3>";
+    resultadoHTML += "<p>Utilidad Neta/Bruta: " + (ventasTotales * margenGanancia).toFixed(2) + " soles</p>";
+    resultadoHTML += "<p>Costo de Alquiler: " + costoAlquiler.toFixed(2) + " soles</p>";
+    resultadoHTML += "<p>Gastos Extras en Soles: " + gastosExtrasSoles.toFixed(2) + " soles</p>";
+    resultadoHTML += "<p>Sueldo Total de Vendedoras: " + sueldoTotalVendedoras.toFixed(2) + " soles</p>";
+    resultadoHTML += "<p>Comisiones: " + comisiones.toFixed(2) + " soles</p>";
+    resultadoHTML += "<p><strong>Utilidad Final: " + utilidadFinal.toFixed(2) + " soles</strong></p>";
+
+    document.getElementById('resultado').innerHTML = resultadoHTML;
+}
+
+        
+            </script>
+        </div>
+        <div id="seccionPuntoEquilibrio" class="hidden">
+            <h2>Calculadora del Punto de Equilibrio</h2>
+            <!-- No es necesario duplicar los campos de entrada si se reutilizarán los valores ya ingresados -->
+            <button onclick="calcularPuntoEquilibrio()">Calcular Punto de Equilibrio</button>
+            <div class="result" id="resultadoPuntoEquilibrio">
+                <!-- Aquí se mostrarán los resultados del punto de equilibrio -->
+            </div>
+        </div>
+        
+        <script>
+            // ... (Tu función calcularResultados existente)
+            function mostrarSeccion(seccion) {
+                document.getElementById('seccionUtilidad').style.display = seccion === 'utilidad' ? 'block' : 'none';
+                document.getElementById('seccionPuntoEquilibrio').style.display = seccion === 'puntoEquilibrio' ? 'block' : 'none';
+            }
+        </script>
+    
+        
+    <script>
+           function calcularPuntoEquilibrio() {
+                var tipoCambio = parseFloat(document.getElementById('tipoCambio').value);
+                var margenGanancia = parseFloat(document.getElementById('margenGanancia').value) / 100;
+                var alquilerFijoDolares = parseFloat(document.getElementById('alquiler').value);
+                var numVendedoras = parseInt(document.getElementById('numVendedoras').value);
+                var sueldoMinimo = 1070;
+                var factorPlanilla = 1.35;
+                var porcentajeComisiones = 0.03; // 3% de comisiones sobre las ventas
+                var porcentajeAlquilerVariable = 0.12; // 12% de alquiler variable sobre las ventas
+                
+                var alquilerFijoSoles = alquilerFijoDolares * tipoCambio;
+                var sueldosFijos = sueldoMinimo * numVendedoras * factorPlanilla;
+                var costosFijos = alquilerFijoSoles + sueldosFijos;
+
+                var puntoEquilibrio = costosFijos / (margenGanancia - (porcentajeAlquilerVariable + porcentajeComisiones * factorPlanilla));
+
+                var resultadoHTML = "<p>Punto de Equilibrio (soles): " + puntoEquilibrio.toFixed(2) + "</p>";
+                document.getElementById('resultadoPuntoEquilibrio').innerHTML = resultadoHTML;
+            }
+
+        </script>
+    </body>
+    </html>
